@@ -28,16 +28,16 @@ class RestaurantServiceTest {
 	public void searching_for_existing_restaurant_should_return_expected_restaurant_object()
 			throws restaurantNotFoundException {
 		Restaurant actualRestaurant = service.findRestaurantByName("Amelie's cafe");
-		String returnedRestaurantName = actualRestaurant.getName();
-		String location = actualRestaurant.getLocation();
-		String openingTime = actualRestaurant.openingTime.toString();
-		String closingTime = actualRestaurant.closingTime.toString();
+		String expectedRestaurantName = actualRestaurant.getName();
+		String expectedLocation = actualRestaurant.getLocation();
+		String expectedOpeningTime = actualRestaurant.openingTime.toString();
+		String expectedClosingTime = actualRestaurant.closingTime.toString();
 		assertNotNull(actualRestaurant);
 		assertTrue(actualRestaurant instanceof Restaurant);
-		assertEquals("Amelie's cafe", returnedRestaurantName);
-		assertEquals("Chennai", location);
-		assertEquals("10:30", openingTime);
-		assertEquals("22:00", closingTime);
+		assertEquals("Amelie's cafe", expectedRestaurantName);
+		assertEquals("Chennai", expectedLocation);
+		assertEquals("10:30", expectedOpeningTime);
+		assertEquals("22:00", expectedClosingTime);
 	}
 
 	@Test

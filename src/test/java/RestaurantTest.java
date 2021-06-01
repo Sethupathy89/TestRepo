@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,17 +33,21 @@ class RestaurantTest {
 	}
 
     @Test
-    public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time() throws Exception{  
-    	LocalTime local = LocalTime.parse("13:00:00");;
-    	Mockito.when(mockRestaurant.getCurrentTime()).thenReturn(local);
-    	assertTrue(mockRestaurant.isRestaurantOpen());
+    public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time() throws Exception{ 
+    	LocalTime originalTime = LocalTime.now();
+    	long timeCalc = ChronoUnit.MINUTES.between(originalTime,openingTime)+50;
+    	LocalTime mockTime = originalTime.plusMinutes(timeCalc);
+    	Mockito.when(mockRestaurant.getCurrentTime()).thenReturn(mockTime);
+    	assertTrue(mockRestaurant.isRestaurantOpen());    	
     }
 
     @Test
     public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time() throws Exception{
-    	LocalTime local = LocalTime.parse("23:00:00");
-    	Mockito.when(mockRestaurant.getCurrentTime()).thenReturn(local);
-    	assertFalse(mockRestaurant.isRestaurantOpen());
+    	LocalTime originalTime = LocalTime.now();
+    	long timeCalc = ChronoUnit.MINUTES.between(openingTime,originalTime)+50;
+    	LocalTime mockTime = originalTime.minusMinutes(timeCalc);
+    	Mockito.when(mockRestaurant.getCurrentTime()).thenReturn(mockTime);
+    	assertFalse(mockRestaurant.isRestaurantOpen());    	
     }
     
     @Test
@@ -61,26 +66,6 @@ class RestaurantTest {
                 ()->restaurant.removeFromMenu("French fries"));
     }
     
-    @Test
-    public void get_total_order_value_of_3_items_selected_by_customer() {
-    	restaurant.addToMenu("Sizzling brownie",319);
-    	int actualTotalOrderValue= restaurant.getTotalOrderValue("Sweet corn soup,Sizzling brownie,Vegetable lasagne");
-    	int expectedTotalOrderValue = 707;
-    	assertEquals(expectedTotalOrderValue,actualTotalOrderValue);
-    }
     
-    @Test
-    public void get_total_order_value_of_2_items_selected_by_customer() {
-    	int actualTotalOrderValue= restaurant.getTotalOrderValue("Sweet corn soup,Vegetable lasagne");
-    	int expectedTotalOrderValue = 388;
-    	assertEquals(expectedTotalOrderValue,actualTotalOrderValue);
-    }
-    
-    @Test
-    public void get_total_order_value_of_1_item_selected_by_customer() {
-    	int actualTotalOrderValue= restaurant.getTotalOrderValue("Sweet corn soup");
-    	int expectedTotalOrderValue = 119;
-    	assertEquals(expectedTotalOrderValue,actualTotalOrderValue);
-    }
     
 }
