@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RestaurantServiceTest {
-
 	RestaurantService service = new RestaurantService();
 	Restaurant restaurant;
 	LocalTime openingTime;
